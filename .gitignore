@@ -1,0 +1,7 @@
+node_modules
+.env
+*.log
+API/.DS_Store
+.DS_Store
+test
+.vscode

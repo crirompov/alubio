@@ -1,0 +1,40 @@
+{
+  "name": "Alubio",
+  "version": "0.0.1",
+  "description": "Alubio & Cats API.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --require 'babel-register' index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "nodemon --inspect --require 'babel-register' index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crirompov/alubio"
+  },
+  "author": "Cristian Romero Povea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crirompov/alubio/issues"
+  },
+  "homepage": "https://github.com/crirompov/alubio#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "jwt-simple": "^0.5.5",
+    "morgan": "^1.9.0",
+    "mysql2": "^1.6.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "sequelize": "^4.38.0"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  }
+}

@@ -1,0 +1,15 @@
+ENV=production
+DEBUG=true
+HOST=localhost
+PORT=9000
+TIMEZONE=Europe/Amsterdam
+DB_DIALECT=mysql      
+DB_DATABASE=cake-shop
+DB_USERNAME=cakeshopuser
+DB_PASSWORD=cakeshoppass
+DB_HOST=localhost
+DB_PORT=3306
+DB_POOL_MAX=5
+DB_POOL_MIN=0
+DB_POOL_IDLE=10000
+TOKEN=1234567890
