@@ -36,7 +36,7 @@ const sequelize = new Sequelize(
 )
 
 console.log("Creando modelos en la base de datos...")
-sequelize.sync();
+sequelize.sync({ force: true });
 console.log("Modelos cargados")
 
 module.exports = sequelize

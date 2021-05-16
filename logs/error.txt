@@ -1,0 +1,1 @@
+[ERROR]Sun May 16 2021 23:13:51 GMT+0200 (hora de verano de Europa central) - GET /companies/find - Ruta no encontrada - [/api/v0/companies/../][ERROR]Sun May 16 2021 23:16:42 GMT+0200 (hora de verano de Europa central) - GET /companies/find - Ruta no encontrada - [/api/v0/alubio/]

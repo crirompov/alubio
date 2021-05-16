@@ -1,48 +1,44 @@
 import express from 'express'
 import OwnersController from '../controllers/ownersCtrl'
-import { auth } from '../middlewares'
+
+import Utils from '../common/utils'
+import Strings from '../common/strings'
+
+var logger = require("../services/logger.service").Logger;
 
 const router = express.Router()
 
 
-//router.get('/', auth, (req, res, next) => {
 router.get('/', (req, res, next) => {
     var page_query = Number.parseInt(req.query.page)
     var limit_query = Number.parseInt(req.query.limit)
-    console.log(Date() + " - GET /owners")
+    console.log(Date() + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.GET_OWNERS)
     OwnersController.getAllUsers(page_query, limit_query)
     .then(result => {
         res.send(result)
     })
+    .catch(error => {
+        console.error(Utils.ERROR +Date() + Utils.REQUEST_ERROR_CONTAINER_LEFT +error+Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+        res.status(Utils.HTTP_CODE_CONFLICT).send(Strings.SIMPLE_ERROR_MESSAGE)
+    })
 })
 
-//router.get('/:id', auth, (req, res, next) => {
     router.get('/:id', (req, res, next) => {
         var param_id = Number.parseInt(req.params.id)
-        console.log(Date() + " - GET /owners")
-        //req.pipe(OwnersController.getDataUsers(param_id)).pipe(res)
-        OwnersController.getDataUsers(param_id)
-        .then(result => {
-            res.send(result)
-        })
+        if(!Number.isNaN(param_id)){
+            console.log(Date() + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.GET_OWNERS + param_id)
+            OwnersController.getDataUsers(param_id)
+            .then(result => {
+                res.send(result)
+            })
+            .catch(error => {
+                console.error(Utils.ERROR +Date() + Utils.REQUEST_ERROR_CONTAINER_LEFT +error+Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+                res.status(Utils.HTTP_CODE_CONFLICT).send(Strings.SIMPLE_ERROR_MESSAGE)
+            })
+        }else{
+            logger.error(Utils.ERROR + Date() + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.GET_OWNERS + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.REQUEST_ERROR_CONTAINER_LEFT + req.params.id + Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+            res.status(Utils.HTTP_CODE_OK).send(Strings.TRY_ERROR)
+        }
     })
-    
-//router.post('/', auth, (req, res, next) => {
-router.post('/', (req, res, next) => {
-    console.log(Date() + " - POST /owners")
-})
-
-//router.put('/:cif', auth, (req, res, next) => {
-router.put('/', (req, res, next) => {
-    console.log(Date() + " - PUT /owners/")
-    
-})
-
-//router.delete('/', auth, (req, res, next) => {
-router.delete('/', (req, res, next) => {
-    console.log(Date() + " - DELETE /companies")
-    res
-        .sendStatus(405)
-})
 
 export default router

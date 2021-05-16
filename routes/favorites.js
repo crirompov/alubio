@@ -1,20 +1,16 @@
 import express from 'express'
 import FavoritesController from '../controllers/favoritesCtrl'
 import OwnersController from '../controllers/ownersCtrl'
-import { auth } from '../middlewares'
+import Utils from '../common/utils'
+import Strings from '../common/strings'
+
+var logger = require("../services/logger.service").Logger;
 
 const router = express.Router()
 
-
-//router.get('/', auth, (req, res, next) => {
-router.get('/', (req, res, next) => {
-
-})
-
-//router.post('/', auth, (req, res, next) => {
 router.post('/', (req, res, next) => {
     var data = req.body
-    console.log(Date() + " - POST /favorites")
+    console.log(Date() + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.POST_FAVORITES)
     if (data.hasOwnProperty("id_owner") && data.hasOwnProperty("id_company")) {
         var param_id_owner = Number.parseInt(data.id_owner)
         var param_id_company = Number.parseInt(data.id_company) 
@@ -26,29 +22,17 @@ router.post('/', (req, res, next) => {
                 res.status(result[0]).send(result[1])
             })
             .catch(error => {
-                console.error("[ERROR] " +Date() + "")
-                res.status(409).send("Error")
+                console.error(Utils.ERROR +Date() + '['+error+']')
+                res.status(Utils.HTTP_CODE_CONFLICT).send(Strings.SIMPLE_ERROR_MESSAGE)
             })
         }else{
-            res.status(409).send(JSON.stringify({error: "Dueño no existe"}))
+            res.status(Utils.HTTP_CODE_CONFLICT).send(JSON.stringify({error: Strings.OWNER_NOT_EXIST}))
         }
     })
     }else{
-		res.status(409).send(JSON.stringify({error: "Faltan parámetros"}))
+        logger.error(Utils.ERROR + Date() + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.POST_FAVORITES + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.ERROR_PARAMETER + Utils.REQUEST_MESSAGE_SEPARATOR + Utils.REQUEST_ERROR_CONTAINER_LEFT + data_search_param + Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+        res.status(Utils.HTTP_CODE_OK).send(Strings.TRY_ERROR)
     }
-})
-
-//router.put('/:cif', auth, (req, res, next) => {
-router.put('/', (req, res, next) => {
-    console.log(Date() + " - PUT /favorites/")
-    
-})
-
-//router.delete('/', auth, (req, res, next) => {
-router.delete('/', (req, res, next) => {
-    console.log(Date() + " - DELETE /favorites")
-    res
-        .sendStatus(405)
 })
 
 export default router

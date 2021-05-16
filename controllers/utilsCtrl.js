@@ -1,4 +1,5 @@
-
+import Utils from '../common/utils'
+import Config from '../common/config'
 
 
 
@@ -9,7 +10,7 @@ var UtilsController = module.exports = {
         limitSum
     ){
         if(!Number.isNaN(page)){
-            return url+'?page='+(page+limitSum)
+            return url+ Config.PAGINATION_URL_CREATE +(page+limitSum)
         }
         return url
     },
@@ -17,8 +18,8 @@ var UtilsController = module.exports = {
     getLimitModule(
         limit
     ){
-        if(!Number.isNaN(limit) && (limit % 20 ) == 0){
-            return limit / 20
+        if(!Number.isNaN(limit) && (limit % Number.parseInt(Config.LIMIT_MULTIPLE) ) == 0){
+            return limit / Number.parseInt(Config.LIMIT_MULTIPLE)
         }
         return 0
     }

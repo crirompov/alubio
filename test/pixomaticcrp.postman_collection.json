@@ -1,0 +1,417 @@
+{
+	"info": {
+		"_postman_id": "1158e8e3-2f3c-4c8e-9bad-abd6002eccad",
+		"name": "pixomaticcrp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Mision 1.C & Reto B",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/companies?page=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"companies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EXP - Directorio Transversal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/companies/../",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"companies",
+						"..",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EXP - Recurso no encontrado",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/alubio/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"alubio",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 1.D",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"searchParam\": \"Alub\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/v0/companies/find",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"companies",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 1.A",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token_company\", pm.response.json().token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Alubio\",\n    \"description\": \"En Alub.io desarrollamos nuestros propios PMVs para probar si realmente funcionarían ahí fuera.\",\n    \"email\": \"info@alub.io\",\n    \"cif\": \"J36696250\",\n    \"logo\": \"https://www.alub.io/assets/images/logo.png\",\n    \"shortdesc\": \"Software Lab\",\n    \"ccc\": \"12345678\",\n    \"date\": \"2019-10-10\",\n    \"status\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/v0/companies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 1.B",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token_company}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Alubio-Modificaado\",\n    \"description\": \"En Alub.io desarrollamos nuestros propios PMVs para probar si realmente funcionarían ahí fuera.\",\n    \"logo\": \"https://www.alub.io/assets/images/logo.png\",\n    \"shortdesc\": \"Software Lab\",\n    \"ccc\": \"12345678\",\n    \"status\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/v0/companies/J36696250",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"companies",
+						"J36696250"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 2.A",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/owners?page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"owners"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EXP - Ejecución de código",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/owners?page=1; while(true){};",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"owners"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1; while(true){};"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EXP - SQLi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/owners?page=1' or '1'='1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"owners"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1' or '1'='1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 2 - Reto A",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/owners?page=2&limit=40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"owners"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "limit",
+							"value": "40"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 2.C, Reto B & Mision 3.B",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/owners/35",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"owners",
+						"35"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 2.B",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id_owner\": \"35\",\n    \"id_company\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/v0/favorites",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"favorites"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 1, Reto A & Mision 3 Reto A - Authorization",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token_company}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/companies?page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"companies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mision 1, Reto A & Mision 3 Reto A - Unauthorization",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/v0/companies?page=11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v0",
+						"companies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "11"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

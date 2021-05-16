@@ -2,6 +2,9 @@
 import sequelize from 'sequelize';
 import Companies from '../models/companies'
 import  Op from "sequelize";
+import Utils from '../common/utils'
+import Strings from '../common/strings'
+import Config from '../common/config'
 
 
 var CompaniesController = module.exports = {
@@ -31,11 +34,11 @@ var CompaniesController = module.exports = {
         })
         .save()
         .then(companySaved => {
-            return [200, "token: "+companyUpdated.TOKEN]
+            return [Utils.HTTP_CODE_OK, JSON.stringify(Utils.JSON_CREATE_LEFT + Utils.JSON_CREATE_AUX + Config.COMPANIES_SEND_TOKEN_JSON + Utils.JSON_CREATE_AUX + Utils.JSON_CREATE_AUX_POINT+ Utils.JSON_CREATE_AUX+companySaved.TOKEN + Utils.JSON_CREATE_AUX + Utils.JSON_CREATE_RIGHT)]
         })
         .catch(error => {
-            console.log("[ERROR] ["+error+"]")
-			return [409, "Error"]
+            console.error(Utils.ERROR +Date() + Utils.REQUEST_ERROR_CONTAINER_LEFT + error + Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+			return [Utils.HTTP_CODE_CONFLICT, Strings.SIMPLE_ERROR_MESSAGE]
         })
     },
 
@@ -57,11 +60,11 @@ var CompaniesController = module.exports = {
             STATUS: param_status
         }, { where: {CIF: param_cif}})
         .then( companyUpdated => {
-			return [200, "Updated"]
+			return [Utils.HTTP_CODE_OK, Strings.COMPANY_UPDATE_MESSAGE]
         })
         .catch(error =>{
-            console.log("[ERROR] ["+error+"]")
-			return [409, "Error"]
+            console.error(Utils.ERROR +Date() + Utils.REQUEST_ERROR_CONTAINER_LEFT + error + Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+			return [Utils.HTTP_CODE_CONFLICT, Strings.SIMPLE_ERROR_MESSAGE]
         })
     },
 
@@ -73,11 +76,11 @@ var CompaniesController = module.exports = {
             attributes: { exclude: ['CCC', 'CIF', 'DATE', 'TOKEN']}
         })
         .then(result => {
-            return [200, result]
+            return [Utils.HTTP_CODE_OK, result]
         })
         .catch(error =>{
-            console.log("[ERROR] ["+error+"]")
-			return [409, "Error"]
+            console.error(Utils.ERROR +Date() + Utils.REQUEST_ERROR_CONTAINER_LEFT + error + Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+			return [Utils.HTTP_CODE_CONFLICT, Strings.SIMPLE_ERROR_MESSAGE]
         })
     },
 
@@ -92,11 +95,11 @@ var CompaniesController = module.exports = {
             }
         })
         .then(result => {
-            return [200, result]
+            return [Utils.HTTP_CODE_OK, result]
         })
         .catch(error =>{
-            console.log("[ERROR] ["+error+"]")
-			return [409, "Error"]
+            console.error(Utils.ERROR +Date() + Utils.REQUEST_ERROR_CONTAINER_LEFT + error + Utils.REQUEST_ERROR_CONTAINER_RIGHT)
+			return [Utils.HTTP_CODE_CONFLICT, Strings.SIMPLE_ERROR_MESSAGE]
         })
     },
 

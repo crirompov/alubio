@@ -2,6 +2,12 @@
 const request = require('request');
 const rp = require('request-promise');
 import UtilsController from './utilsCtrl' 
+import Config from '../common/config'
+import CacheService from '../services/cache.service';
+
+//Cache
+const ttl = 60 * 60 * 7; 
+const cache = new CacheService(ttl); 
 
 
 var OwnersController = module.exports = {
@@ -10,7 +16,7 @@ var OwnersController = module.exports = {
         limit_query
     ){
         var limit_aux = UtilsController.getLimitModule(limit_query)
-        var resultLimit = JSON.parse('{"code": 200}')
+        var resultLimit = JSON.parse(Config.RESULT_INIT_JSON)
         if(limit_aux > 1){
           const promises = []
           for (let i = 0;i<limit_aux; i++){ 
@@ -22,10 +28,11 @@ var OwnersController = module.exports = {
               return resultLimit
             })
         }else{
+          //const options = this.getOptions(Config.GOREST_URL_USERS,)
           const options = {
-            url: UtilsController.getFinalUrl('https://gorest.co.in/public-api/users', page_query, 0),
+            url: UtilsController.getFinalUrl(Config.GOREST_URL_USERS, page_query, 0),
             headers: {
-              'Authorization': 'Bearer 9d63976dc046976d8d529d6edb61ba42387ae790aec16bccc1df599cbef1ddfb'
+              'Authorization': Config.HEADERS_INIT_TOKEN + Config.GOREST_TOKEN
             }
           };
           return rp(options)
@@ -42,9 +49,9 @@ var OwnersController = module.exports = {
     ){
 
       const options = {
-        url: UtilsController.getFinalUrl('https://gorest.co.in/public-api/users', page_query, i_variable),
+        url: UtilsController.getFinalUrl(Config.GOREST_URL_USERS, page_query, i_variable),
         headers: {
-          'Authorization': 'Bearer 9d63976dc046976d8d529d6edb61ba42387ae790aec16bccc1df599cbef1ddfb'
+          'Authorization': Config.HEADERS_INIT_TOKEN + Config.GOREST_TOKEN
         }
       };
       return rp(options)
@@ -57,9 +64,9 @@ var OwnersController = module.exports = {
         id_user
     ){
         const options = {
-            url: 'https://gorest.co.in/public-api/users?id='+id_user ,
+            url: Config.GOREST_USERS_ID_PARAM+id_user ,
             headers: {
-              'Authorization': 'Bearer 9d63976dc046976d8d529d6edb61ba42387ae790aec16bccc1df599cbef1ddfb'
+              'Authorization': Config.HEADERS_INIT_TOKEN + Config.GOREST_TOKEN
             }
         };
         return rp(options)
@@ -76,46 +83,61 @@ var OwnersController = module.exports = {
     getDataUsers(
         id_user
     ){
-      const options1 = {
-          url: 'https://gorest.co.in/public-api/users/'+id_user ,
-          headers: {
-            'Authorization': 'Bearer 9d63976dc046976d8d529d6edb61ba42387ae790aec16bccc1df599cbef1ddfb'
-          }
-        };
-        const options2 = {
-            url: 'https://gorest.co.in/public-api/users/'+id_user+'/posts' ,
-            headers: {
-              'Authorization': 'Bearer 9d63976dc046976d8d529d6edb61ba42387ae790aec16bccc1df599cbef1ddfb'
-            }
-          };
-        return rp(options1)
-        .then(user_details => {
-            return rp(options2)
-            .then(user_posts => {
-              const promises = []
-              for(let post = 0; post < JSON.parse(user_posts).data.length; post++) {
-                promises.push(this.getCommentsByPost(JSON.parse(user_posts).data[post]))
-                
-              }
-              return Promise.all(promises)
-              .then(promiseResult => {
+      return cache.get(id_user, () => this.getDataUserNoCache(id_user), () => this.getPostByUser(id_user))
+      .then(result => {
+        return result
+      })
+    },
 
-                var result = JSON.parse(user_details).data
-                result.posts = promiseResult
-                
-                return result
-              })
+    getDataUserNoCache(
+      id_user
+    ){
+      const options1 = {
+        url: Config.GOREST_URL_USERS+id_user ,
+        headers: {
+          'Authorization': Config.HEADERS_INIT_TOKEN + Config.GOREST_TOKEN
+        }
+      };
+      return rp(options1)
+      .then(user_details => {
+          var result = JSON.parse(user_details).data
+          return this.getPostByUser(id_user)
+          .then(resultPost => {
+            result.posts = resultPost
+            return result 
+          })
+      })
+    },
+    getPostByUser(
+      id_user
+    ){
+      const options2 = {
+        url: Config.GOREST_URL_USERS + id_user + Config.GOREST_END_POSTS ,
+        headers: {
+          'Authorization': Config.HEADERS_INIT_TOKEN + Config.GOREST_TOKEN
+        }
+      };
+      return rp(options2)
+          .then(user_posts => {
+            const promises = []
+            for(let post = 0; post < JSON.parse(user_posts).data.length; post++) {
+              promises.push(this.getCommentsByPost(JSON.parse(user_posts).data[post]))
+              
+            }
+            return Promise.all(promises)
+            .then(promiseResult => {
+              return promiseResult
             })
-        })
+          })
     },
 
     getCommentsByPost(
       post
     ){
       const options = {
-        url: 'https://gorest.co.in/public-api/posts/'+post.id+'/comments' ,
+        url: Config.GOREST_URL_POST + post.id + Config.GOREST_END_COMMENTS ,
         headers: {
-          'Authorization': 'Bearer 9d63976dc046976d8d529d6edb61ba42387ae790aec16bccc1df599cbef1ddfb'
+          'Authorization': Config.HEADERS_INIT_TOKEN + Config.GOREST_TOKEN
         }
       };
       return rp(options)
